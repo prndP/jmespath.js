@@ -618,6 +618,13 @@
             }
             this._match(TOK_RPAREN);
             return args[0];
+          case TOK_NUMBER:
+              if (this._lookahead(0) === TOK_UNQUOTEDIDENTIFIER){
+                // If a number is immediately followed by unquoted identifier, subsume the number into the unquoted identifier
+                var node = {type: "Field", name: token.value + this._lookaheadToken(0).value};
+                this._advance();
+                return node;
+              }
           default:
             this._errorToken(token);
         }
